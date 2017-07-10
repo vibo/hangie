@@ -1,0 +1,21 @@
+{
+  "name": "hangman",
+  "version": "0.0.1",
+  "description": "",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://vibo@bitbucket.org/vibo/hangman.git"
+  },
+  "author": "Viktor Carlén",
+  "homepage": "https://bitbucket.org/vibo/hangman#readme",
+  "dependencies": {
+    "@types/react": "^15.0.35",
+    "@types/react-dom": "^15.5.1",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1"
+  }
+}
