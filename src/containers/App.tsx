@@ -56,7 +56,12 @@ export class App extends React.Component<Props, State> {
     public setWord(id: number, value: string) {
         this.setState(prevState => {
             return {
-                words: Object.assign(prevState.words, { [id]: value })
+                words: prevState.words
+                    .map(word => 
+                        word.id !== id
+                            ? word
+                            : { id, value }
+                    )
             };
         });
     }
