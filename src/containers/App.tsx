@@ -25,31 +25,38 @@ export class App extends React.Component<Props, State> {
         super(props);
 
         this.addWord = this.addWord.bind(this);
+        this.addWordAfterId = this.addWordAfterId.bind(this);
         this.deleteWord = this.deleteWord.bind(this);
         this.setWord = this.setWord.bind(this);
     }
 
     public addWord() {
         this.setState(prevState => {
-            const newCount = prevState.idCount + 1;
-
+            const idCount = prevState.idCount + 1;
             const word = {
-                id: newCount,
+                id: idCount,
                 value: ''
             };
 
             return {
-                idCount: newCount,
+                idCount,
                 words: [...prevState.words, word]
             }
         });
     }
 
-    public deleteWord(id: number) {
+    public addWordAfterId(id: number) {
         this.setState(prevState => {
-            return { 
-                words: prevState.words.filter(word => word.id !== id)
-             };
+            const index = prevState.words.findIndex(word => word.id === id);
+            const idCount = prevState.idCount + 1;
+            const words = prevState.words.slice();
+
+            words.splice(index + 1, 0, {
+                id: idCount,
+                value: ''
+            });
+
+            return { idCount, words};
         })
     }
 
@@ -60,10 +67,18 @@ export class App extends React.Component<Props, State> {
                     .map(word => 
                         word.id !== id
                             ? word
-                            : { id, value }
+                            : { id, value}
                     )
             };
         });
+    }
+
+    public deleteWord(id: number) {
+        this.setState(prevState => {
+            return { 
+                words: prevState.words.filter(word => word.id !== id)
+             };
+        })
     }
 
     render() {
@@ -76,10 +91,11 @@ export class App extends React.Component<Props, State> {
                     this.state.isPlaying
                         ? <Game />
                         : <Configuration 
-                            words={this.state.words}
                             onAdd={this.addWord}
-                            onDelete={this.deleteWord}
+                            onAddAfterId={this.addWordAfterId}
                             onSet={this.setWord}
+                            onDelete={this.deleteWord}
+                            words={this.state.words}
                         />
                 }
             </div>

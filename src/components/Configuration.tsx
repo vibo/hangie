@@ -4,9 +4,10 @@ import { WordField } from './WordField';
 
 export interface Props {
     words: any;
-    onAdd: () => any;
-    onDelete: (id: number) => any;
-    onSet: (id: number, value: string) => any;
+    onAdd: () => void;
+    onAddAfterId: (id: number) => void;
+    onDelete: (id: number) => void;
+    onSet: (id: number, value: string) => void;
 }
 
 interface State {
@@ -21,13 +22,7 @@ export class Configuration extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
-        this.onAdd = this.onAdd.bind(this);
         this.toggleReveal = this.toggleReveal.bind(this);
-    }
-
-    public onAdd(event: any) {
-        event.preventDefault();
-        this.props.onAdd();
     }
 
     public toggleReveal(state?: boolean) {
@@ -48,10 +43,11 @@ export class Configuration extends React.Component<Props, State> {
                     style={{display: 'inline'}}
                 >
                     <WordField 
+                        onPressSpaceKey={() => this.props.onAddAfterId(word.id)}
                         onSet={value => this.props.onSet(word.id, value)}
                         reveal={this.state.reveal}
                         tabIndex={index + 1}
-                        word={word}
+                        value={word.value}
                     />
 
                     {
@@ -75,7 +71,7 @@ export class Configuration extends React.Component<Props, State> {
                 </div>
 
                 <button
-                    onClick={this.onAdd}
+                    onClick={() => this.props.onAdd()}
                 >
                     Add word
                 </button>
