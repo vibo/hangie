@@ -63,24 +63,28 @@ export class Configuration extends React.Component<Props, State> {
             );
 
         return (
-            <form>
-                <h2>Configuration</h2>
-
+            <form
+                onSubmit={event => event.preventDefault()}
+            >
                 <div className="form__component">
                     { words }
                 </div>
 
-                <button
-                    onClick={() => this.props.onAdd()}
-                >
-                    Add word
-                </button>
+                <div className="form__component">
+                    <button
+                        onClick={() => this.props.onAdd()}
+                        className="button button--raised"
+                    >
+                        Add word
+                    </button>
 
-                <button
-                    onClick={event => { event.preventDefault(); this.toggleReveal(); }}
-                >
-                    {this.state.reveal ? 'Hide input' : 'Show input'}
-                </button>
+                    <button
+                        onClick={event => { event.preventDefault(); this.toggleReveal(); }}
+                        className="button button--raised"
+                    >
+                        {this.state.reveal ? 'Hide input' : 'Show input'}
+                    </button>    
+                </div>
             </form>
         );
     }

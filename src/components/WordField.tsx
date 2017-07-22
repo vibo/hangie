@@ -8,9 +8,6 @@ export interface Props {
     value: any;
 }
 
-// TODO: Just use onChange and also onKeyDown for spaces...
-// On space -> remove all spaces and add new word
-// Setting word should clean any potential spaces
 export class WordField extends React.Component<Props, undefined> {
     public inputRef: HTMLInputElement;
 
@@ -37,6 +34,7 @@ export class WordField extends React.Component<Props, undefined> {
                 onKeyDown={this.captureSpaceKey}
                 placeholder="Empty"
                 ref={input => this.inputRef = input}
+                style={{textTransform: 'uppercase'}}
                 tabIndex={this.props.tabIndex}
                 type={this.props.reveal ? 'text' : 'password'}
                 value={this.props.value}
