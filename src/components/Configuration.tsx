@@ -1,60 +1,62 @@
 import * as React from "react";
-
+import './Configuration.less';
+import Word from '../shared/word.model';
 import { WordField } from './WordField';
 
 export interface Props {
-    words: any;
+    words: Word[];
     onAdd: () => void;
-    onAddAfterId: (id: number) => void;
+    onAddAfterWord: (id: number) => void;
     onDelete: (id: number) => void;
     onSet: (id: number, value: string) => void;
 }
 
 interface State {
-    reveal: boolean;
+    showInput: boolean;
 }
 
 export class Configuration extends React.Component<Props, State> {
     public state: State = {
-        reveal: false
+        showInput: false
     };
 
     constructor(props: Props) {
         super(props);
-
-        this.toggleReveal = this.toggleReveal.bind(this);
+        this.toggleShowInput = this.toggleShowInput.bind(this);
     }
 
-    public toggleReveal(state?: boolean) {
+    public toggleShowInput(state?: boolean) {
         this.setState(prevState => {
             return {
-                reveal: typeof state === "boolean"
+                showInput: typeof state === "boolean"
                     ? state 
-                    : !prevState.reveal
+                    : !prevState.showInput
             };
-        })
+        });
     }
 
     render() {
         const words = this.props.words
-            .map((word: any, index: number) => 
+            .map((word: Word, index: number) => 
                 <div
-                    key={word.id} 
-                    style={{display: 'inline'}}
+                    className="configuration__word-field"
+                    key={word.id}
                 >
                     <WordField 
-                        onPressSpaceKey={() => this.props.onAddAfterId(word.id)}
+                        onPressSpaceKey={() => this.props.onAddAfterWord(word.id)}
                         onSet={value => this.props.onSet(word.id, value)}
-                        reveal={this.state.reveal}
+                        showInput={this.state.showInput}
                         tabIndex={index + 1}
                         value={word.value}
                     />
 
                     {
-                        word !== this.props.words[0] &&
+                        // User must be able to delete an added word
+                        word.id > 1 &&
                             <button
                                 onClick={event => { event.preventDefault(); this.props.onDelete(word.id); }}
                                 tabIndex={0}
+                                type="button"
                             >
                                 x
                             </button>
@@ -66,23 +68,25 @@ export class Configuration extends React.Component<Props, State> {
             <form
                 onSubmit={event => event.preventDefault()}
             >
-                <div className="form__component">
+                <div className="configuration__words">
                     { words }
                 </div>
 
-                <div className="form__component">
+                <div className="configuration__controls">
                     <button
-                        onClick={() => this.props.onAdd()}
                         className="button button--raised"
+                        onClick={() => this.props.onAdd()}
+                        type="button"
                     >
                         Add word
                     </button>
 
                     <button
-                        onClick={event => { event.preventDefault(); this.toggleReveal(); }}
                         className="button button--raised"
+                        onClick={event => { event.preventDefault(); this.toggleShowInput(); }}
+                        type="button"
                     >
-                        {this.state.reveal ? 'Hide input' : 'Show input'}
+                        {this.state.showInput ? 'Hide input' : 'Show input'}
                     </button>    
                 </div>
             </form>

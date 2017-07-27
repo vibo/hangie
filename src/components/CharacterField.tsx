@@ -1,21 +1,34 @@
 import * as React from "react";
 
+import './CharacterField.less';
+
 export interface Props {
-    onSet: (value: string) => void;
+    character: string;
+    isFirst: boolean;
+    onSet: (character: string) => void;
     tabIndex: number;
-    value: any;
 }
 
 export class CharacterField extends React.Component<Props, undefined> {
+    public inputRef: HTMLInputElement;
+
+    componentDidMount() {
+        if (this.props.isFirst) {
+            this.inputRef.focus();
+        }
+    }
+
     render() {
         return (
             <input
-                onChange={event => this.props.onSet(event.target.value)}
+                className="character-field"
                 maxLength={1}
+                onChange={event => this.props.onSet(event.target.value)}
+                ref={input => this.inputRef = input}
                 size={1}
                 tabIndex={this.props.tabIndex}
                 type="text"
-                value={this.props.value}
+                value={this.props.character}
             />
         );
     }

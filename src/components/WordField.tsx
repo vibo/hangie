@@ -1,9 +1,10 @@
 import * as React from "react";
+import './WordField.less';
 
 export interface Props {
     onPressSpaceKey: () => void;
     onSet: (value: string) => void;
-    reveal: boolean;
+    showInput: boolean;
     tabIndex: number;
     value: any;
 }
@@ -13,7 +14,6 @@ export class WordField extends React.Component<Props, undefined> {
 
     constructor(props: Props) {
         super(props);
-
         this.captureSpaceKey = this.captureSpaceKey.bind(this);
     }
 
@@ -22,21 +22,22 @@ export class WordField extends React.Component<Props, undefined> {
     }
 
     public captureSpaceKey(event: React.KeyboardEvent<HTMLInputElement>) {
-        if (event.key === ' ') {
-            this.props.onPressSpaceKey();
-        }
+        if (event.key !== ' ') return;
+        event.preventDefault();
+        this.props.onPressSpaceKey();
     }
 
     render() {
         return (
             <input
+                className="word-field"
                 onChange={event => this.props.onSet(event.target.value)}
                 onKeyDown={this.captureSpaceKey}
-                placeholder="Empty"
+                placeholder="Enter a word..."
                 ref={input => this.inputRef = input}
                 style={{textTransform: 'uppercase'}}
                 tabIndex={this.props.tabIndex}
-                type={this.props.reveal ? 'text' : 'password'}
+                type={this.props.showInput ? 'text' : 'password'}
                 value={this.props.value}
             />
         );
