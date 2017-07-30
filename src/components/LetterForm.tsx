@@ -12,9 +12,16 @@ interface State {
 }
 
 export class LetterForm extends React.Component<Props, State> {
+    public inputRef: HTMLInputElement;
     public state: State = {
         showDuplicateLetterWarning: false
     };
+
+    public componentDidMount() {
+        if (this.inputRef) {
+            this.inputRef.focus();
+        }
+    }
 
     public setLetter(letter: string) {
         // Prevent duplicated letters.
@@ -45,8 +52,9 @@ export class LetterForm extends React.Component<Props, State> {
                         maxLength={1}
                         onChange={event => this.setLetter(event.target.value)}
                         onKeyPress={event => event.key === 'Enter' && this.props.onEnter()}
+                        ref={input => this.inputRef = input}
                         size={1}
-                        style={{textTransform: 'uppercase'}}
+                        style={{textAlign: 'center', textTransform: 'uppercase'}}
                         value={this.props.letter}
                     />
 
