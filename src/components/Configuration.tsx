@@ -35,7 +35,7 @@ export class Configuration extends React.Component<Props, State> {
         });
     }
 
-    render() {
+    render() {  
         const words = this.props.words
             .map((word: Word, index: number) => 
                 <div
@@ -43,24 +43,17 @@ export class Configuration extends React.Component<Props, State> {
                     key={word.id}
                 >
                     <WordField 
+                        onPressBackspaceKey={() => 
+                            word.id > 1 
+                            && !word.value 
+                            && this.props.onDelete(word.id)
+                        }
                         onPressSpaceKey={() => this.props.onAddAfterWord(word.id)}
                         onSet={value => this.props.onSet(word.id, value)}
                         showInput={this.state.showInput}
                         tabIndex={index + 1}
                         value={word.value}
                     />
-
-                    {
-                        // User must be able to delete an added word
-                        word.id > 1 &&
-                            <button
-                                onClick={event => { event.preventDefault(); this.props.onDelete(word.id); }}
-                                tabIndex={0}
-                                type="button"
-                            >
-                                x
-                            </button>
-                    }
                 </div>
             );
 

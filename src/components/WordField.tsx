@@ -2,6 +2,7 @@ import * as React from "react";
 import './WordField.less';
 
 export interface Props {
+    onPressBackspaceKey: () => void;
     onPressSpaceKey: () => void;
     onSet: (value: string) => void;
     showInput: boolean;
@@ -14,11 +15,20 @@ export class WordField extends React.Component<Props, undefined> {
 
     constructor(props: Props) {
         super(props);
-        this.captureSpaceKey = this.captureSpaceKey.bind(this);
+        this.captureKeys = this.captureKeys.bind(this);
     }
 
     componentDidMount() {
         this.inputRef.focus();
+    }
+
+    public captureKeys(event: React.KeyboardEvent<HTMLInputElement>) {
+        switch(event.key.toLocaleLowerCase()) {
+            case ' ':
+                this.props.onPressSpaceKey();
+            case 'backspace':
+                this.props.onPressBackspaceKey();
+        }
     }
 
     public captureSpaceKey(event: React.KeyboardEvent<HTMLInputElement>) {
@@ -32,7 +42,7 @@ export class WordField extends React.Component<Props, undefined> {
             <input
                 className="word-field"
                 onChange={event => this.props.onSet(event.target.value)}
-                onKeyDown={this.captureSpaceKey}
+                onKeyDown={this.captureKeys}
                 placeholder="Enter a word..."
                 ref={input => this.inputRef = input}
                 style={{textTransform: 'uppercase'}}
