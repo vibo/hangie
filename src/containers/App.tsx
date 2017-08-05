@@ -79,7 +79,7 @@ export class App extends React.Component<Props, State> {
         const index = this.state.words.findIndex(word => word.id === id);
 
         // Don't add another word if value of word in question is empty.
-        if (!this.state.words[index].value.length) return;
+        if (!this.state.words[index].value) return;
 
         this.setState(prevState => {
             const incrementor = prevState.incrementor + 1;

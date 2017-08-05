@@ -26,8 +26,10 @@ export class WordField extends React.Component<Props, undefined> {
         switch(event.key.toLocaleLowerCase()) {
             case ' ':
                 this.props.onPressSpaceKey();
+                break;
             case 'backspace':
                 this.props.onPressBackspaceKey();
+                break;
         }
     }
 
