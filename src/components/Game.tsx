@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import './Game.less';
+
 import Word from '../shared/word.model';
 import Answer from '../shared/answer.model';
 

@@ -22,8 +22,8 @@ export class Answers extends React.Component<Props, undefined> {
         const answers = this.props.answers
             .map((answer, answerIndex) =>
                 <div
+                    className="answers__block"
                     key={answer.id}
-                    style={{display: 'inline-block', marginRight: '10px'}}
                 >
                     {
                         answer.letters
