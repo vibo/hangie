@@ -4,11 +4,12 @@ import Word from '../shared/word.model';
 import { WordField } from './WordField';
 
 export interface Props {
-    words: Word[];
+    focusedWord: number;
     onAdd: () => void;
     onAddAfterWord: (id: number) => void;
     onDelete: (id: number) => void;
     onSet: (id: number, value: string) => void;
+    words: Word[];
 }
 
 interface State {
@@ -43,6 +44,7 @@ export class Configuration extends React.Component<Props, State> {
                     key={word.id}
                 >
                     <WordField 
+                        isFocused={this.props.focusedWord === word.id}
                         onPressBackspaceKey={() => 
                             word.id > 1 
                             && !word.value 

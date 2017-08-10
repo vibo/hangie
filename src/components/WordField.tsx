@@ -2,6 +2,7 @@ import * as React from "react";
 import './WordField.less';
 
 export interface Props {
+    isFocused: boolean;
     onPressBackspaceKey: () => void;
     onPressSpaceKey: () => void;
     onSet: (value: string) => void;
@@ -11,6 +12,7 @@ export interface Props {
 }
 
 export class WordField extends React.Component<Props, undefined> {
+    public containerRef: HTMLSpanElement;
     public inputRef: HTMLInputElement;
 
     constructor(props: Props) {
@@ -19,6 +21,7 @@ export class WordField extends React.Component<Props, undefined> {
     }
 
     componentDidMount() {
+        // Input should not be rendered automatically
         this.inputRef.focus();
     }
 
@@ -41,17 +44,19 @@ export class WordField extends React.Component<Props, undefined> {
 
     render() {
         return (
-            <input
-                className="word-field"
-                onChange={event => this.props.onSet(event.target.value)}
-                onKeyDown={this.captureKeys}
-                placeholder="Enter a word..."
-                ref={input => this.inputRef = input}
-                style={{textTransform: 'uppercase'}}
-                tabIndex={this.props.tabIndex}
-                type={this.props.showInput ? 'text' : 'password'}
-                value={this.props.value}
-            />
+            <div>
+                <input
+                    className="word-field"
+                    onChange={event => this.props.onSet(event.target.value)}
+                    onKeyDown={this.captureKeys}
+                    placeholder="..."
+                    ref={input => this.inputRef = input}
+                    style={{textTransform: 'uppercase'}}
+                    tabIndex={this.props.tabIndex}
+                    type={this.props.showInput ? 'text' : 'password'}
+                    value={this.props.value}
+                />
+            </div>
         );
     }
 }

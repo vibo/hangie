@@ -11,6 +11,7 @@ export interface Props {
 
 export interface State {
     answers: Answer[];
+    focusedWord: number;
     letter: string;
     letters: string[],
     incrementor: number;
@@ -21,6 +22,7 @@ export interface State {
 export class App extends React.Component<Props, State> {
     public state: State = {
         answers: [],
+        focusedWord: undefined,
         letter: '',
         letters: [],
         incrementor: 1,
@@ -91,7 +93,11 @@ export class App extends React.Component<Props, State> {
 
     public deleteWord(id: number) {
         this.setState(prevState => {
-            return { 
+            const index = prevState.words.findIndex(word => word.id === id);
+
+            // TODO: Consider using splice instead of filter based on index.
+            return {
+                focusedWord: prevState.words[index-1].id,
                 words: prevState.words.filter(word => word.id !== id)
              };
         });
@@ -181,6 +187,7 @@ export class App extends React.Component<Props, State> {
                                 </h1>
 
                                 <Configuration 
+                                    focusedWord={this.state.focusedWord}
                                     onAdd={this.addWord}
                                     onAddAfterWord={this.addWordAfterId}
                                     onDelete={this.deleteWord}
