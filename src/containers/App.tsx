@@ -145,9 +145,12 @@ export class App extends React.Component<Props, State> {
     }
 
     public startGame() {
+        // Ignore empty words.
+        // Setup answers.
         this.setState(prevState => {
             return {
                 answers: prevState.words
+                    .filter(word => word.value)
                     .map((word: Word, index: number) => {
                         return new Answer(
                             index + 1, 

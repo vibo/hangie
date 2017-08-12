@@ -49,7 +49,6 @@ export class WordField extends React.Component<Props, undefined> {
                     className="word-field"
                     onChange={event => this.props.onSet(event.target.value)}
                     onKeyDown={this.captureKeys}
-                    placeholder="..."
                     ref={input => this.inputRef = input}
                     style={{textTransform: 'uppercase'}}
                     tabIndex={this.props.tabIndex}
