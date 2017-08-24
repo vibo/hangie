@@ -8,6 +8,7 @@ export interface Props {
     onAdd: () => void;
     onAddAfterWord: (id: number) => void;
     onDelete: (id: number) => void;
+    onFocusedWord: () => void;
     onSet: (id: number, value: string) => void;
     words: Word[];
 }
@@ -36,7 +37,7 @@ export class Configuration extends React.Component<Props, State> {
         });
     }
 
-    render() {  
+    render() {
         const words = this.props.words
             .map((word: Word, index: number) => 
                 <div
@@ -45,6 +46,7 @@ export class Configuration extends React.Component<Props, State> {
                 >
                     <WordField 
                         isFocused={this.props.focusedWord === word.id}
+                        onFoucsed={() => this.props.onFocusedWord()}
                         onPressBackspaceKey={() => 
                             word.id > 1 
                             && !word.value 

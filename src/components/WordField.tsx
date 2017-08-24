@@ -3,6 +3,7 @@ import './WordField.less';
 
 export interface Props {
     isFocused: boolean;
+    onFoucsed: () => void;
     onPressBackspaceKey: () => void;
     onPressSpaceKey: () => void;
     onSet: (value: string) => void;
@@ -21,8 +22,18 @@ export class WordField extends React.Component<Props, undefined> {
     }
 
     componentDidMount() {
-        // Input should not be rendered automatically
-        this.inputRef.focus();
+        this.focus();
+    }
+
+    componentDidUpdate() {
+        if (this.props.isFocused) {
+            this.focus();
+            this.props.onFoucsed();
+        }
+    }
+
+    private focus() {
+         this.inputRef.focus();
     }
 
     public captureKeys(event: React.KeyboardEvent<HTMLInputElement>) {

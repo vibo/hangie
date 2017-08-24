@@ -73,7 +73,10 @@ export class App extends React.Component<Props, State> {
         this.setState(prevState => {
             const incrementor = prevState.incrementor + 1;
             const word = new Word(incrementor);
-            return {incrementor, words: [...prevState.words, word]};
+            return {
+                incrementor, 
+                words: [...prevState.words, word]
+            };
         });
     }
 
@@ -85,19 +88,28 @@ export class App extends React.Component<Props, State> {
 
         this.setState(prevState => {
             const incrementor = prevState.incrementor + 1;
+            const word = new Word(incrementor);
             const words = prevState.words.slice();
-            words.splice(index + 1, 0, new Word(incrementor));
-            return {incrementor, words};
+            words.splice(index + 1, 0, word);
+            return {
+                incrementor,
+                words
+            };
         });
     }
 
     public deleteWord(id: number) {
         this.setState(prevState => {
-            const index = prevState.words.findIndex(word => word.id === id);
+            const index: number = prevState.words.findIndex(word => word.id === id);
+            const words = prevState.words;
+            let focusedWord: number = undefined;
 
-            // TODO: Consider using splice instead of filter based on index.
+            if (!prevState.focusedWord || prevState.focusedWord === id) {
+                focusedWord = words[index-1].id;
+            }
+
             return {
-                focusedWord: prevState.words[index-1].id,
+                focusedWord,
                 words: prevState.words.filter(word => word.id !== id)
              };
         });
@@ -194,6 +206,7 @@ export class App extends React.Component<Props, State> {
                                     onAdd={this.addWord}
                                     onAddAfterWord={this.addWordAfterId}
                                     onDelete={this.deleteWord}
+                                    onFocusedWord={() => this.setState({focusedWord: undefined})}
                                     onSet={this.setWord}
                                     words={this.state.words}
                                 />
