@@ -16,6 +16,8 @@ export class WordField extends React.Component<Props, undefined> {
     public containerRef: HTMLSpanElement;
     public inputRef: HTMLInputElement;
 
+    private foucusTimeout: number;
+
     constructor(props: Props) {
         super(props);
         this.captureKeys = this.captureKeys.bind(this);
@@ -27,8 +29,16 @@ export class WordField extends React.Component<Props, undefined> {
 
     componentDidUpdate() {
         if (this.props.isFocused) {
-            this.focus();
-            this.props.onFoucsed();
+            this.foucusTimeout = window.setTimeout(() => {
+                this.focus();
+                this.props.onFoucsed();
+            });
+        }
+    }
+
+    componentWillUnmount() {
+        if (typeof this.foucusTimeout === 'number') {
+            window.clearInterval(this.foucusTimeout);
         }
     }
 
@@ -61,6 +71,7 @@ export class WordField extends React.Component<Props, undefined> {
                     onChange={event => this.props.onSet(event.target.value)}
                     onKeyDown={this.captureKeys}
                     ref={input => this.inputRef = input}
+                    spellCheck={false}
                     style={{textTransform: 'uppercase'}}
                     tabIndex={this.props.tabIndex}
                     type={this.props.showInput ? 'text' : 'password'}
