@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import Answer from '../shared/answer.model';
+import FocusedAnswer from '../shared/focused-answer.model';
 import Word from '../shared/word.model';
 
 import { Configuration } from '../components/Configuration';
@@ -11,6 +12,7 @@ export interface Props {
 
 export interface State {
     answers: Answer[];
+    focusedAnswer: FocusedAnswer,
     focusedWord: number;
     letter: string;
     letters: string[],
@@ -22,6 +24,7 @@ export interface State {
 export class App extends React.Component<Props, State> {
     public state: State = {
         answers: [],
+        focusedAnswer: new FocusedAnswer(),
         focusedWord: undefined,
         letter: '',
         letters: [],
@@ -49,6 +52,27 @@ export class App extends React.Component<Props, State> {
         return this.state
             .words
             .some(word => Boolean(word.value && word.value.length));
+    }
+
+    private findEmptyLetterInAnswers(answers: Answer[]): (FocusedAnswer|undefined) {
+        return answers
+            .reduce((focusedAnswer: any, answer, index) => {
+                if (focusedAnswer) return focusedAnswer;
+                const emptyIndex = this.findEmptyIndex(answer.letters);
+
+                return ~emptyIndex
+                    ? new FocusedAnswer(answer.id, emptyIndex)
+                    : focusedAnswer;
+            }, undefined);
+    }
+
+    private findEmptyIndex(array: any[]): number  {
+        return array
+            .reduce((emptyIndex, item, index) => {
+                return emptyIndex >= 0 || item
+                    ? emptyIndex
+                    : index
+            }, -1);
     }
 
     public addLetter() {
@@ -116,19 +140,20 @@ export class App extends React.Component<Props, State> {
     }
 
     public setAnswer(id: number, index: number, value: string) {
+        const answerIndex = this.state.answers.findIndex(answer => answer.id === id);
+        const answer = this.state.answers[answerIndex];
+
+        if (value) this.updateFocusedAnswer(answer, index);
+            
         this.setState(prevState => {
-            return {
-                answers: prevState
-                    .answers
-                    .map(answer => {
-                        if (answer.id !== id) return answer;
-
-                        const letters = answer.letters.slice();
-                        letters[index] = value;
-
-                        return Object.assign({}, answer, {letters});
-                    })
-            };
+            const updatedAnswers = prevState.answers
+                .map(answer => {
+                    if (answer.id !== id) return answer;
+                    const letters = answer.letters.slice();
+                    letters[index] = value;
+                    return Object.assign({}, answer, {letters});
+                });
+            return { answers: updatedAnswers };
         });
     }
 
@@ -175,6 +200,34 @@ export class App extends React.Component<Props, State> {
         });
     }
 
+    public updateFocusedAnswer(answer: Answer, letterIndex: number) {
+        this.setState(prevState => {
+            const answerIndex = prevState.answers.findIndex(_answer => _answer.id === answer.id);
+            let focusedAnswer: FocusedAnswer;
+
+            if (answer.letters.length > letterIndex) {
+                const restIndex = letterIndex + 1;
+                const restLetters = answer.letters.slice(restIndex);
+                const emptyIndex = this.findEmptyIndex(restLetters);
+
+                if (~emptyIndex) {
+                    focusedAnswer = new FocusedAnswer(answer.id, emptyIndex + restIndex);
+                }
+            }
+
+            if (!focusedAnswer 
+                && prevState.answers.length > answerIndex
+            ) {
+                const answers = prevState.answers.slice(answerIndex + 1);
+                focusedAnswer = this.findEmptyLetterInAnswers(answers);
+            }
+
+            if (!focusedAnswer) return;
+
+            return { focusedAnswer };
+        });
+    }
+
     render() {
         const isPlaying = this.state.isPlaying;
 
@@ -186,9 +239,11 @@ export class App extends React.Component<Props, State> {
                     this.state.isPlaying
                         ? <Game 
                             answers={this.state.answers}
+                            focusedAnswer={this.state.focusedAnswer}
                             letter={this.state.letter}
                             letters={this.state.letters}
                             onAddLetter={this.addLetter}
+                            onFocusedAnswer={() => this.setState({focusedAnswer: new FocusedAnswer()})}
                             onSetAnswer={this.setAnswer}
                             onSetLetter={this.setLetter}
                             words={this.state.words}
@@ -198,7 +253,7 @@ export class App extends React.Component<Props, State> {
                                 <h1 
                                     className="app-title"
                                 >
-                                    Hangman
+                                    Hangie
                                 </h1>
 
                                 <Configuration 

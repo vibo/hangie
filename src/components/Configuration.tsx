@@ -46,7 +46,7 @@ export class Configuration extends React.Component<Props, State> {
                 >
                     <WordField 
                         isFocused={this.props.focusedWord === word.id}
-                        onFoucsed={() => this.props.onFocusedWord()}
+                        onFocused={() => this.props.onFocusedWord()}
                         onPressBackspaceKey={() => 
                             word.id > 1 
                             && !word.value 

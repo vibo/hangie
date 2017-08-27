@@ -3,7 +3,7 @@ import './WordField.less';
 
 export interface Props {
     isFocused: boolean;
-    onFoucsed: () => void;
+    onFocused: () => void;
     onPressBackspaceKey: () => void;
     onPressSpaceKey: () => void;
     onSet: (value: string) => void;
@@ -13,10 +13,9 @@ export interface Props {
 }
 
 export class WordField extends React.Component<Props, undefined> {
-    public containerRef: HTMLSpanElement;
     public inputRef: HTMLInputElement;
 
-    private foucusTimeout: number;
+    private focusTimeout: number;
 
     constructor(props: Props) {
         super(props);
@@ -29,16 +28,16 @@ export class WordField extends React.Component<Props, undefined> {
 
     componentDidUpdate() {
         if (this.props.isFocused) {
-            this.foucusTimeout = window.setTimeout(() => {
+            this.focusTimeout = window.setTimeout(() => {
                 this.focus();
-                this.props.onFoucsed();
+                this.props.onFocused();
             });
         }
     }
 
     componentWillUnmount() {
-        if (typeof this.foucusTimeout === 'number') {
-            window.clearInterval(this.foucusTimeout);
+        if (typeof this.focusTimeout === 'number') {
+            window.clearInterval(this.focusTimeout);
         }
     }
 
@@ -63,12 +62,17 @@ export class WordField extends React.Component<Props, undefined> {
         this.props.onPressSpaceKey();
     }
 
+    public deselectText() {
+        this.inputRef.selectionStart = this.inputRef.selectionEnd;
+    }
+
     render() {
         return (
             <div>
                 <input
                     className="word-field"
                     onChange={event => this.props.onSet(event.target.value)}
+                    onFocus={event => this.deselectText()}
                     onKeyDown={this.captureKeys}
                     ref={input => this.inputRef = input}
                     spellCheck={false}

@@ -1,14 +1,27 @@
 import * as React from "react";
 import './Answers.less'
+
 import Answer from '../shared/answer.model';
 import { CharacterField } from './CharacterField';
+import FocusedAnswer from '../shared/focused-answer.model';
 
 export interface Props {
     answers: Answer[];
+    focusedAnswer: FocusedAnswer;
+    onFocusedAnswer: () => void;
     onSetAnswer: (id: number, index: number, value: string) => void;
 }
 
 export class Answers extends React.Component<Props, undefined> {
+    public fieldIsFocused(answerId: number, letterIndex: number): boolean {
+        const inFocus = this.props.focusedAnswer;
+
+        return Boolean(
+            inFocus.id === answerId 
+            && inFocus.letterIndex === letterIndex
+        );
+    }
+
     public fuseTabIndex(id: number, index: number): number {
         return Number("" + id + index);
     }
@@ -35,6 +48,8 @@ export class Answers extends React.Component<Props, undefined> {
                                     <CharacterField
                                         character={letter}
                                         isFirst={this.isFirstCharacter(answerIndex, letterIndex)}
+                                        isFocused={this.fieldIsFocused(answer.id, letterIndex)}
+                                        onFocused={this.props.onFocusedAnswer}
                                         onSet={
                                             character => this.props
                                                 .onSetAnswer(answer.id, letterIndex, character)
