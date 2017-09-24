@@ -4,7 +4,10 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 
 module.exports = {
-    entry: './src/index.tsx',
+    entry: [
+        'react-hot-loader/patch',
+        './src/index.tsx',
+    ],
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, '../dist')
@@ -31,7 +34,10 @@ module.exports = {
             })
         }, {
             test: /\.tsx?$/,
-            use: 'awesome-typescript-loader'
+            loaders: [
+                "react-hot-loader/webpack",
+                "awesome-typescript-loader"
+            ],
         }, {
         // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
             enforce: "pre",

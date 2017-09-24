@@ -21,7 +21,7 @@ export interface State {
     words: Word[];
 }
 
-export class App extends React.Component<Props, State> {
+export default class App extends React.Component<Props, State> {
     public state: State = {
         answers: [],
         focusedAnswer: new FocusedAnswer(),
