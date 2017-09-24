@@ -1,13 +1,13 @@
 var common = require('./config/webpack.common.config');
 var merge = require('webpack-merge');
-var dasConfig;
+var config;
 
 process.env.ENV  = process.env.ENV || JSON.stringify('development');
 
 if (process.env.ENV === 'production') {
-    dasConfig = require('./config/webpack.prod.config');
+    config = require('./config/webpack.prod.config');
 } else {
-    dasConfig = require('./config/webpack.dev.config');
+    config = require('./config/webpack.dev.config');
 }
 
-module.exports = merge({}, common, dasConfig);
+module.exports = merge({}, common, config);

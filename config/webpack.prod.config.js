@@ -16,7 +16,7 @@ module.exports = {
         }),
         new UglifyJsPlugin({
             sourceMap: true,
-            beautify: false, //prod
+            beautify: false,
             output: {
                 comments: false
             },
@@ -34,7 +34,7 @@ module.exports = {
                 evaluate: true,
                 if_return: true,
                 join_vars: true,
-                negate_iife: false // we need this for lazy v8
+                negate_iife: false
             },
         })
     ]

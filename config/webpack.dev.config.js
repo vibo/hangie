@@ -6,9 +6,13 @@ module.exports = {
     devtool: 'source-map',
     plugins: [
         new ExtractTextPlugin('styles.css'),
+        new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('development')
         })
-    ]
+    ],
+    devServer: {
+        hot: true
+    }
 };

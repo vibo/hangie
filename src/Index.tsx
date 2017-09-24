@@ -1,24 +1,22 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import './styles/app.less';
-import App from "./containers/App";
+import { App } from "./containers/App";
 
-// Quick and dirty
-declare const module: any;
-declare const require: any
+const root = document.querySelector('app-entry');
 
 ReactDOM.render(
     <App />,
-    document.querySelector('app-entry')
+    root
 );
 
-// Hot Module Replacement API
+// Hot module replacements
 if (module.hot) {
-    module.hot.accept("./App", () => {
-      const NextApp = require<{default: typeof App}>("./App").default;
-      ReactDOM.render(
-        <App />,
-        document.querySelector('app-entry')
-      );
+    module.hot.accept("./containers/App", () => {
+        const NextApp = require<{default: typeof App}>("./containers/App").default;
+        ReactDOM.render(
+            <NextApp />,
+            root
+        );
     });
-  }
+}
