@@ -1,7 +1,7 @@
 {
-  "name": "hangman",
+  "name": "hangie",
   "version": "0.0.1",
-  "description": "",
+  "description": "Game",
   "main": "webpack.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,10 +11,9 @@
     "url": "git+https://vibo@bitbucket.org/vibo/hangman.git"
   },
   "author": "Viktor Carlén",
+  "license": "MIT",
   "homepage": "https://bitbucket.org/vibo/hangman#readme",
   "dependencies": {
-    "@types/react": "^15.0.35",
-    "@types/react-dom": "^15.5.1",
     "css-loader": "^0.28.4",
     "extract-text-webpack-plugin": "^2.1.2",
     "less": "^2.7.2",
@@ -23,13 +22,19 @@
     "react-dom": "^15.6.1",
     "react-hot-loader": "^3.0.0-beta.7",
     "style-loader": "^0.18.2",
-    "webpack": "^3.4.1",
+    "webpack": "^3.6.0",
     "webpack-merge": "^4.1.0"
   },
   "devDependencies": {
+    "@types/node": "^8.0.30",
+    "@types/react": "^15.6.2",
+    "@types/react-dom": "^15.5.4",
+    "@types/react-hot-loader": "^3.0.4",
+    "@types/webpack": "^3.0.11",
+    "@types/webpack-env": "^1.13.1",
     "awesome-typescript-loader": "^3.2.1",
-    "less-loader": "^4.0.5",
     "source-map-loader": "^0.2.1",
-    "typescript": "^2.4.1"
+    "typescript": "^2.4.1",
+    "webpack-dev-server": "^2.8.2"
   }
 }
