@@ -50,10 +50,7 @@ export const config: webpack.Configuration = {
 
     plugins: [
         new webpack.NamedModulesPlugin(),
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify('development')
-        })
+        new webpack.HotModuleReplacementPlugin()
     ],
 
     devServer: {

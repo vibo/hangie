@@ -45,9 +45,6 @@ export const config: webpack.Configuration = {
     },
 
     plugins: [
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify('production')
-        }),
         new webpack.optimize.UglifyJsPlugin({
             sourceMap: true,
             beautify: false,
@@ -66,7 +63,7 @@ export const config: webpack.Configuration = {
                 if_return: true,
                 join_vars: true,
                 negate_iife: false
-            },
+            }
         })
     ]
 };
